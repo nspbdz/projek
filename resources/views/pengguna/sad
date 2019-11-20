@@ -1,0 +1,112 @@
+
+
+@extends('layouts.index')
+@section('content')
+@php
+$rs = App\Kategori::all();
+$rs2 = App\Asal::all();
+@endphp
+<h3>Form Edit Santri</h3>
+@foreach ($data as $d)
+<form role="form" method="POST" 
+action="{{ route('santri.update',$d->id) }}" enctype="multipart/form-data">
+@csrf
+@method('PUT')	
+	<div class="form-group">
+		<label>
+			NIS
+		</label>
+		<input type="text" class="form-control" name="nis"
+    value="{{ $d->nis }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Nama Santri
+		</label>
+		<input type="text" class="form-control" name="nama"
+		       value="{{ $d->nama }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Tempat Lahir
+		</label>
+		<input type="text" class="form-control" name="tempat"
+		       value="{{ $d->tmp_lahir }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Tanggal Lahir
+		</label>
+		<input type="date" class="form-control" name="tanggal"
+		       value="{{ $d->tgl_lahir }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Daerah Asal
+		</label>
+		<select name="asal" class="form-control">
+			<option value="">-- Pilih Daerah --</option>
+            @foreach ($rs2 as $row)
+            @php
+            $sel = ($d->asal_id ==  $row['id'])  ? 'selected' : '';  
+            @endphp
+			<option value="{{ $row['id'] }}" {{ $sel }}> {{ $row['nama'] }}</option>
+			@endforeach
+		</select>
+	</div>
+	<div class="form-group">
+		<label>
+			Kategori Santri
+		</label><br/>
+        @foreach ($rs as $row)
+        @php
+            $cek = ($d->kategori_id ==  $row['id'])  ? 'checked' : '';  
+        @endphp
+        <input type="radio" name="kategori" 
+        value="{{ $row['id'] }}" {{ $cek }} />
+			{{ $row['nama'] }} &nbsp;
+		@endforeach
+	</div>
+	<div class="form-group">
+		<label>
+			Kelas
+		</label>
+		<input type="text" class="form-control" name="kelas"
+		       value="{{ $d->kelas }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Alamat
+		</label>
+		<textarea class="form-control" name="alamat" cols="50" rows="3">{{ $d->alamat }}</textarea>
+	</div>
+	<div class="form-group">
+		<label>
+			HP
+		</label>
+		<input type="text" class="form-control" name="hp"
+		       value="{{ $d->hp }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Email
+		</label>
+		<input type="text" class="form-control" name="email"
+		       value="{{ $d->email }}" />
+	</div>
+	<div class="form-group">
+		<label>
+			Foto
+		</label>
+		<input type="file" class="form-control" name="foto"
+		       value="{{ $d->foto }}" />
+	</div>
+	
+	<button type="submit" class="btn btn-primary" 
+	 name="proses" value="ubah">Ubah</button>
+	
+	<button type="reset" class="btn btn-info" 
+	 name="unproses" value="batal">Batal</button>
+</form>
+@endforeach
+@endsection
